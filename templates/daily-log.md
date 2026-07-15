@@ -1,11 +1,10 @@
 ---
 date: {{DATE}}
-day: {{DAY_NUM}}
 tags: [{{TAGS}}]
 summary: "{{SUMMARY}}"
 ---
 
-# Day {{DAY_NUM}}：{{TITLE}}
+# {{TITLE}}
 
 > 📅 {{DATE}} | 🏷️ {{TAGS}}
 

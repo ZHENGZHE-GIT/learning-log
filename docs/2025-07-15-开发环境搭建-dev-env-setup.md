@@ -1,11 +1,10 @@
 ---
 date: 2025-07-15
-day: 1
 tags: [环境搭建, 工具链, 代理, Codex, OpenRouter, Continue.dev]
 summary: "从零搭建完整的 AI 开发工具链：Clash 代理配置、OpenRouter 探索、Codex CLI 尝试与放弃、最终选择 Continue.dev"
 ---
 
-# Day 1：AI 开发环境从零搭建
+# AI 开发环境从零搭建
 
 > 📅 2025-07-15 | 🏷️ 环境搭建 · 工具链 · 代理 · Codex
 
