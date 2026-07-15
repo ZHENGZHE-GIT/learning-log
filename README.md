@@ -1,12 +1,28 @@
 # Learning Log
 
-> 学习路上的配置、踩坑、心得记录
+> AI Agent 应用开发实习准备 —— 工具链搭建、踩坑记录、学习笔记、知识沉淀
+
+## 项目定位
+
+这个仓库不只是"每日日志"，它是我的**第二大脑**：
+
+| 内容类型 | 存放位置 | 说明 |
+|----------|----------|------|
+| 任务日志 | `docs/`（计划迁移到 `journal/`） | 每天做了什么、学到了什么 |
+| 问题排查 | `docs/`（计划迁移到 `troubleshooting/`） | 独立的问题诊断和修复记录 |
+| 学习笔记 | `docs/`（计划迁移到 `notes/`） | 教程蒸馏、概念理解、技术文档 |
+| 参考资料 | `docs/`（计划迁移到 `references/`） | 指令速查、教程原文、外部链接 |
+| 路线规划 | `roadmap/` | 学习路径和下一步计划 |
+
+> 📋 目录结构重构计划见 [这里](./docs/2026-07-16-目录结构重构计划-restructure-plan.md)
 
 ## 目录
 
 <!-- INDEX_TABLE_START -->
 | 日期 | 主题 | 标签 |
 |------|------|------|
+| [2026-07-16](./docs/Git基础认知-从零到够用.md) | Git 认知文档：从零到够用（分支/冲突/stash/reset/rebase/远程协作） | Git · 版本控制 · 基础概念 · 进阶 |
+| [2026-07-16](./docs/2026-07-16-目录结构重构计划-restructure-plan.md) | 目录结构重构计划：docs/ 拆分为多目录 | 项目优化 · 目录结构 · 重构 |
 | [2026-07-16](./docs/2026-07-16-代理端口修正-clash-port-fix.md) | 代理端口修正：Clash Verge Rev 端口 7890 → 7897 + Claude Code 接入代理 | 代理 · 工具链 · Clash Verge Rev · Claude Code · 故障排查 |
 | [2026-07-15](./docs/2026-07-15-重构日志组织方式-restructure-docs.md) | 重构日志组织方式 + 建立任务完成工作流 | 项目优化 · 日志规范 · Git · CLAUDE.md |
 | [2026-07-15](./docs/2026-07-15-尚硅谷教程知识蒸馏-shangguigu-distillation.md) | 尚硅谷 AI Coding 教程核心知识蒸馏 | AI Coding教程 · 知识蒸馏 · Vibe Coding · Claude Code |
@@ -23,18 +39,22 @@
 - **Claude Code** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)
 - **Codex** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)
 - **Continue.dev** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)
-- **Git** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)
+- **Git** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)、[Git 认知文档](./docs/Git基础认知-从零到够用.md)
 - **Memory** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)
 - **OpenRouter** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)
 - **Vibe Coding** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[知识蒸馏](./docs/2026-07-15-尚硅谷教程知识蒸馏-shangguigu-distillation.md)
+- **版本控制** — [Git 认知文档](./docs/Git基础认知-从零到够用.md)
 - **代理** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)、[端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)
 - **工具链** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)、[端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)
 - **故障排查** — [端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)
-- **插件** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)
 - **环境搭建** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)
+- **基础概念** — [Git 认知文档](./docs/Git基础认知-从零到够用.md)
+- **进阶** — [Git 认知文档](./docs/Git基础认知-从零到够用.md)
+- **目录结构** — [重构计划](./docs/2026-07-16-目录结构重构计划-restructure-plan.md)
 - **日志规范** — [重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)
-- **项目优化** — [重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)
+- **项目优化** — [重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)、[重构计划](./docs/2026-07-16-目录结构重构计划-restructure-plan.md)
 - **知识蒸馏** — [知识蒸馏](./docs/2026-07-15-尚硅谷教程知识蒸馏-shangguigu-distillation.md)
+- **重构** — [重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)、[重构计划](./docs/2026-07-16-目录结构重构计划-restructure-plan.md)
 <!-- TAGS_END -->
 
 ## 参考文档
