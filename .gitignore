@@ -1,2 +1,6 @@
 .DS_Store
 Thumbs.db
+
+# Assets (screenshots, diagrams)
+# Uncomment to exclude binary files from git:
+# assets/*
