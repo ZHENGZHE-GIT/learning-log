@@ -4,7 +4,7 @@ tags: [环境搭建, 工具链, 代理, Codex, OpenRouter, Continue.dev]
 summary: "从零搭建完整的 AI 开发工具链：Clash 代理配置、OpenRouter 探索、Codex CLI 尝试与放弃、最终选择 Continue.dev"
 ---
 
-> ⚠️ **更新（2026-07-16）**：Clash Verge Rev 升级为 Mihomo 内核，代理端口从 7890 变为 **7897**。详见 [代理端口修正日志](2026-07-16-代理端口修正-clash-port-fix.md)。`~/.codex/.env` 已同步更新为 7897。另外给 Claude Code 的 `settings.json` 也加了代理，WebFetch 现在能访问被墙页面。
+> ⚠️ **更新（2026-07-16）**：Clash Verge Rev 升级为 Mihomo 内核，代理端口从 7890 变为 **7897**。详见 [代理端口修正日志](../troubleshooting/2026-07-16-代理端口修正-clash-port-fix.md)。`~/.codex/.env` 已同步更新为 7897。另外给 Claude Code 的 `settings.json` 也加了代理，WebFetch 现在能访问被墙页面。
 
 # AI 开发环境从零搭建
 

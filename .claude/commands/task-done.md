@@ -5,7 +5,7 @@
 ## 步骤
 
 1. **确认任务日志**
-   - 检查 `docs/` 下是否有本次任务的日志文件
+   - 检查 `journal/` 下是否有本次任务的日志文件
    - 如果没有，按模板创建：`YYYY-MM-DD-任务标题-english-slug.md`
    - 确保 frontmatter 包含 date、tags、summary
    - 确保章节包含：背景、完成事项、踩坑记录、关键文件、下一步计划

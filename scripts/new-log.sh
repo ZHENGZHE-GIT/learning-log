@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# new-log.sh — 创建每日学习日志，更新 README，提交并推送
+# new-log.sh — 创建学习日志，更新 README，提交
+# 支持三种类型：journal（默认）、troubleshooting、notes
 set -euo pipefail
 
 # ---------------------------------------------------------------------------
@@ -9,7 +10,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 TEMPLATE="$PROJECT_DIR/templates/daily-log.md"
 README="$PROJECT_DIR/README.md"
-DOCS_DIR="$PROJECT_DIR/docs"
 
 TODAY=$(date +%Y-%m-%d)
 
@@ -23,27 +23,38 @@ TAGS=""
 SUMMARY=""
 TITLE=""
 SLUG=""
+LOG_TYPE="journal"
+SUBDIR=""
 
 usage() {
     cat <<EOF
 Usage: new-log.sh [OPTIONS] TITLE [SLUG]
 
 Options:
-  -a, --append      打开今天已有日志继续编辑（而非新建）
-  -n, --dry-run     预览模式：生成文件但跳过 git 操作
-  -i, --interactive 交互模式下提示输入缺失字段
-  -t, --tags TAGS   逗号分隔的标签
-  -s, --summary S   一句话摘要
-  -h, --help        显示此帮助信息
+  -a, --append         打开今天已有日志继续编辑（仅 journal 类型）
+  -n, --dry-run        预览模式：生成文件但跳过 git 操作
+  -i, --interactive    交互模式下提示输入缺失字段
+  -t, --tags TAGS      逗号分隔的标签
+  -s, --summary S      一句话摘要
+  --type TYPE          日志类型：journal（默认）、troubleshooting、notes
+  --subdir DIR         notes 子目录（仅 --type notes 时有效）
+                       可选：01-foundations 02-agent-loop 03-tools-rag
+                             04-harness 05-multi-agent 06-protocols
+                             07-evals-safety 08-projects
+  -h, --help           显示此帮助信息
 
 Arguments:
-  TITLE             日志标题（中文，必填）
-  SLUG              英文短 slug（可选，默认从标题提取）
+  TITLE                标题（中文，必填）
+  SLUG                 英文短 slug（可选，默认从标题提取）
+
+Examples:
+  bash scripts/new-log.sh "搭建开发环境" "dev-env-setup"
+  bash scripts/new-log.sh --type troubleshooting "代理端口修正" "proxy-port-fix"
+  bash scripts/new-log.sh --type notes --subdir 02-agent-loop "ReAct 模式实现" "react-pattern"
 EOF
     exit 0
 }
 
-# 简单的参数解析（支持长短参数）
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -a|--append) APPEND_MODE=true; shift ;;
@@ -51,6 +62,8 @@ while [[ $# -gt 0 ]]; do
         -i|--interactive) INTERACTIVE=true; shift ;;
         -t|--tags) TAGS="$2"; shift 2 ;;
         -s|--summary) SUMMARY="$2"; shift 2 ;;
+        --type) LOG_TYPE="$2"; shift 2 ;;
+        --subdir) SUBDIR="$2"; shift 2 ;;
         -h|--help) usage ;;
         --) shift; break ;;
         -*) echo "未知参数: $1"; usage ;;
@@ -59,10 +72,40 @@ while [[ $# -gt 0 ]]; do
 done
 
 # ---------------------------------------------------------------------------
-# 追加模式：打开今日已有日志
+# 校验 --type 参数
+# ---------------------------------------------------------------------------
+case "$LOG_TYPE" in
+    journal|troubleshooting|notes) ;;
+    *) echo "错误：--type 必须是 journal、troubleshooting 或 notes，当前值: $LOG_TYPE" >&2; exit 1 ;;
+esac
+
+# 确定输出目录
+case "$LOG_TYPE" in
+    journal)        OUTPUT_DIR="$PROJECT_DIR/journal" ;;
+    troubleshooting) OUTPUT_DIR="$PROJECT_DIR/troubleshooting" ;;
+    notes)
+        if [[ -n "$SUBDIR" ]]; then
+            OUTPUT_DIR="$PROJECT_DIR/notes/$SUBDIR"
+            if [[ ! -d "$OUTPUT_DIR" ]]; then
+                echo "错误：notes 子目录不存在：$SUBDIR" >&2
+                echo "可用子目录：01-foundations 02-agent-loop 03-tools-rag 04-harness 05-multi-agent 06-protocols 07-evals-safety 08-projects" >&2
+                exit 1
+            fi
+        else
+            OUTPUT_DIR="$PROJECT_DIR/notes"
+        fi
+        ;;
+esac
+
+# ---------------------------------------------------------------------------
+# 追加模式：仅 journal 类型
 # ---------------------------------------------------------------------------
 if $APPEND_MODE; then
-    EXISTING=$(ls "$DOCS_DIR/$TODAY"*.md 2>/dev/null | head -1)
+    if [[ "$LOG_TYPE" != "journal" ]]; then
+        echo "错误：-a 追加模式仅支持 journal 类型" >&2
+        exit 1
+    fi
+    EXISTING=$(ls "$OUTPUT_DIR/$TODAY"*.md 2>/dev/null | head -1)
     if [[ -z "$EXISTING" ]]; then
         echo "错误：今天没有日志文件，无法使用 -a 模式" >&2
         echo "请先创建新日志：bash scripts/new-log.sh \"标题\" \"slug\"" >&2
@@ -90,7 +133,6 @@ if [[ -z "$TITLE" ]]; then
     usage
 fi
 
-# 交互模式：提示补充 tags 和 summary
 if $INTERACTIVE; then
     if [[ -z "$TAGS" ]]; then
         read -r -p "标签（逗号分隔）: " TAGS
@@ -101,20 +143,9 @@ if $INTERACTIVE; then
 fi
 
 # ---------------------------------------------------------------------------
-# 检查今日是否已有日志
-# ---------------------------------------------------------------------------
-if compgen -G "$DOCS_DIR/$TODAY"*.md >/dev/null 2>&1; then
-    EXISTING=$(ls "$DOCS_DIR/$TODAY"*.md 2>/dev/null | head -1)
-    echo "警告：今天已有日志文件：$EXISTING" >&2
-    echo "请使用 -a 参数继续编辑：bash scripts/new-log.sh -a" >&2
-    exit 1
-fi
-
-# ---------------------------------------------------------------------------
 # 自动生成 slug（如果未提供）
 # ---------------------------------------------------------------------------
 if [[ -z "$SLUG" ]]; then
-    # 提取英文或从标题生成：移除中文、特殊字符，转小写
     SLUG=$(echo "$TITLE" \
         | sed 's/[^a-zA-Z0-9[:space:]-]//g' \
         | tr '[:upper:]' '[:lower:]' \
@@ -122,47 +153,40 @@ if [[ -z "$SLUG" ]]; then
         | sed 's/-\{2,\}/-/g' \
         | sed 's/^-//;s/-$//')
     if [[ -z "$SLUG" ]]; then
-        # 纯中文标题：取标题前几个中文字的拼音近似
         SLUG="log"
     fi
 fi
 
 # ---------------------------------------------------------------------------
-# 确定 Day 编号
-# ---------------------------------------------------------------------------
-get_next_day() {
-    local max_day=0
-    local d
-    for f in "$DOCS_DIR"/*.md; do
-        [[ -f "$f" ]] || continue
-        # 从 YAML frontmatter 中提取 day:
-        d=$(sed -n '/^---$/,/^---$/p' "$f" | grep -i '^day:' | awk '{print $2}' | tr -d ' ')
-        if [[ -z "$d" ]]; then
-            # 回退：从标题中提取 Day N
-            d=$(head -1 "$f" | grep -oE 'Day[[:space:]]+[0-9]+' | grep -oE '[0-9]+')
-        fi
-        [[ -n "$d" ]] && [[ "$d" -gt "$max_day" ]] && max_day="$d"
-    done
-    echo $((max_day + 1))
-}
-
-DAY_NUM=$(get_next_day)
-
-# ---------------------------------------------------------------------------
-# 提取中文前缀用于文件名
-# ---------------------------------------------------------------------------
-# 移除 ASCII 字符（字母/数字/空格/标点），保留中文等 CJK 字符
-ZH_PART=$(echo "$TITLE" | sed 's/[a-zA-Z0-9[:space:][:punct:]]//g' | head -c 12 | tr -d '\n')
-
 # 构造文件名
-if [[ -n "$ZH_PART" ]]; then
-    FILENAME="$DOCS_DIR/${TODAY}-${ZH_PART}-${SLUG}.md"
+# ---------------------------------------------------------------------------
+if [[ "$LOG_TYPE" == "notes" ]]; then
+    # notes：无日期前缀，概念名作为文件名
+    FILENAME="$OUTPUT_DIR/${TITLE}-${SLUG}.md"
 else
-    FILENAME="$DOCS_DIR/${TODAY}-${SLUG}.md"
+    # journal / troubleshooting：日期前缀
+    ZH_PART=$(echo "$TITLE" | sed 's/[a-zA-Z0-9[:space:][:punct:]]//g' | head -c 12 | tr -d '\n')
+    if [[ -n "$ZH_PART" ]]; then
+        FILENAME="$OUTPUT_DIR/${TODAY}-${ZH_PART}-${SLUG}.md"
+    else
+        FILENAME="$OUTPUT_DIR/${TODAY}-${SLUG}.md"
+    fi
 fi
 
 # ---------------------------------------------------------------------------
-# 从模板生成日志文件
+# journal 类型：检查今日是否已有日志
+# ---------------------------------------------------------------------------
+if [[ "$LOG_TYPE" == "journal" ]]; then
+    if compgen -G "$OUTPUT_DIR/$TODAY"*.md >/dev/null 2>&1; then
+        EXISTING=$(ls "$OUTPUT_DIR/$TODAY"*.md 2>/dev/null | head -1)
+        echo "警告：今天已有日志文件：$EXISTING" >&2
+        echo "请使用 -a 参数继续编辑：bash scripts/new-log.sh -a" >&2
+        exit 1
+    fi
+fi
+
+# ---------------------------------------------------------------------------
+# 从模板生成文件
 # ---------------------------------------------------------------------------
 if [[ ! -f "$TEMPLATE" ]]; then
     echo "错误：模板文件不存在：$TEMPLATE" >&2
@@ -171,29 +195,56 @@ fi
 
 sed \
     -e "s/{{DATE}}/$TODAY/g" \
-    -e "s/{{DAY_NUM}}/$DAY_NUM/g" \
+    -e "s/{{DAY_NUM}}//g" \
     -e "s/{{TITLE}}/$TITLE/g" \
     -e "s/{{TAGS}}/$TAGS/g" \
     -e "s/{{SUMMARY}}/$SUMMARY/g" \
     "$TEMPLATE" > "$FILENAME"
 
 echo "✓ 已创建日志：$FILENAME"
-echo "  Day: $DAY_NUM"
+echo "  类型: $LOG_TYPE"
 
 # ---------------------------------------------------------------------------
 # 更新 README.md 目录表格
 # ---------------------------------------------------------------------------
 update_readme() {
-    local rel_path="docs/$(basename "$FILENAME")"
+    # 生成相对路径的目录前缀
+    local dir_prefix
+    case "$LOG_TYPE" in
+        journal)        dir_prefix="journal" ;;
+        troubleshooting) dir_prefix="troubleshooting" ;;
+        notes)
+            if [[ -n "$SUBDIR" ]]; then
+                dir_prefix="notes/$SUBDIR"
+            else
+                dir_prefix="notes"
+            fi
+            ;;
+    esac
 
-    # 1) 生成新的表格行（从所有日志文件的 frontmatter 收集）
+    # 1) 生成新的表格行（扫描所有内容目录）
     local table_tmp="$PROJECT_DIR/.table_new.md"
     printf "| 日期 | 主题 | 标签 |\n|------|------|------|\n" > "$table_tmp"
-    for f in "$DOCS_DIR"/*.md; do
+
+    # 收集所有内容目录中的 .md 文件
+    local all_files=()
+    local content_dirs=("journal" "troubleshooting" "notes" "references")
+    for dir in "${content_dirs[@]}"; do
+        local full_dir="$PROJECT_DIR/$dir"
+        if [[ -d "$full_dir" ]]; then
+            while IFS= read -r -d '' f; do
+                all_files+=("$f")
+            done < <(find "$full_dir" -maxdepth 2 -name "*.md" -print0 2>/dev/null || true)
+        fi
+    done
+
+    for f in "${all_files[@]}"; do
         [[ -f "$f" ]] || continue
         local fname f_rel f_date f_tags f_title
         fname=$(basename "$f")
-        f_rel="docs/$fname"
+
+        # 计算相对路径（相对于 PROJECT_DIR）
+        f_rel="${f#$PROJECT_DIR/}"
 
         f_date=$(sed -n '/^---$/,/^---$/p' "$f" | grep '^date:' | sed 's/^date:\s*//' | tr -d ' ')
         f_tags=$(sed -n '/^---$/,/^---$/p' "$f" | grep '^tags:' | sed 's/^tags:\s*\[//;s/\]$//;s/"//g' | tr -d ' ')
@@ -201,8 +252,12 @@ update_readme() {
 
         f_title=$(head -5 "$f" | grep '^# ' | sed 's/^# //' | sed 's/^Day [0-9]*：//')
 
+        # 回退：从文件名提取日期
         [[ -z "$f_date" ]] && f_date=$(echo "$fname" | grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2}')
         [[ -z "$f_title" ]] && f_title="（无标题）"
+
+        # 跳过没有日期的笔记（不列入时间索引表）
+        [[ -z "$f_date" ]] && continue
 
         printf "| [%s](./%s) | %s | %s |\n" "$f_date" "$f_rel" "$f_title" "$f_tags" >> "$table_tmp"
     done
@@ -212,21 +267,31 @@ update_readme() {
     > "$tags_tmp"
 
     declare -A TAG_MAP
-    for f in "$DOCS_DIR"/*.md; do
+    for f in "${all_files[@]}"; do
         [[ -f "$f" ]] || continue
-        local f_tags_line f_day f_rel
+        local f_tags_line f_rel f_day
         f_tags_line=$(sed -n '/^---$/,/^---$/p' "$f" | grep '^tags:' | sed 's/^tags:\s*\[//;s/\]$//;s/"//g')
-        f_day=$(sed -n '/^---$/,/^---$/p' "$f" | grep '^day:' | awk '{print $2}' | tr -d ' ')
-        f_rel="docs/$(basename "$f")"
+        [[ -z "$f_tags_line" ]] && continue
+
+        f_rel="${f#$PROJECT_DIR/}"
+
+        # 从文件名提取日期用于标签显示
+        f_day=$(basename "$f" | grep -oE '^[0-9]{4}-[0-9]{2}-[0-9]{2}' | head -1)
+        local f_link_text
+        if [[ -n "$f_day" ]]; then
+            f_link_text="[$f_day](./$f_rel)"
+        else
+            f_link_text="[$(basename "$f" .md)](./$f_rel)"
+        fi
 
         IFS=',' read -ra TAGS_ARR <<< "$f_tags_line"
         for tag in "${TAGS_ARR[@]}"; do
             tag=$(echo "$tag" | xargs)
             [[ -z "$tag" ]] && continue
             if [[ -n "${TAG_MAP[$tag]:-}" ]]; then
-                TAG_MAP[$tag]="${TAG_MAP[$tag]}、[Day $f_day](./$f_rel)"
+                TAG_MAP[$tag]="${TAG_MAP[$tag]}、$f_link_text"
             else
-                TAG_MAP[$tag]="[Day $f_day](./$f_rel)"
+                TAG_MAP[$tag]="$f_link_text"
             fi
         done
     done
@@ -235,7 +300,7 @@ update_readme() {
         printf -- "- **%s** — %s\n" "$tag" "${TAG_MAP[$tag]}" >> "$tags_tmp"
     done
 
-    # 3) Python 脚本：读取临时文件，替换锚点区域
+    # 3) Python 脚本：替换锚点区域
     python -c "
 import re
 
@@ -293,7 +358,7 @@ if git diff --cached --quiet; then
     exit 0
 fi
 
-COMMIT_MSG="docs: Day ${DAY_NUM} - ${TITLE}"
+COMMIT_MSG="docs: ${TITLE}"
 git commit -m "$COMMIT_MSG"
 
 echo "✓ 已提交：$COMMIT_MSG"
