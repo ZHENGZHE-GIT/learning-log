@@ -73,6 +73,23 @@ prepend-rules:
 - Merge 配置比直接改订阅更持久——订阅更新不会覆盖它
 - 验证方法:Clash「连接」面板中 subrouter.ai 的链路显示 **DIRECT** 而非节点名
 
+### 4. 后续追加:Codex 自动审批 503(中转站缺 codex-auto-review 渠道,2026-07-17 解决)
+
+**现象:** Codex 开启「替我审批」(auto-review)后,`pip install` 和 `git add/commit` 的沙盒越权审批全部报 503,即使用户明确授权也无法执行。
+
+**做了什么：**
+- 读 `~/.cc-switch/logs/cc-switch.log`,发现审批请求用的是专用模型 `codex-auto-review`,SubRouter 返回"分组 provider:cavoti 下模型 codex-auto-review 无可用渠道"
+- 查证:auto-review 是 Codex 把沙盒审批外包给专用审核模型的功能;官方订阅号内置该模型,**第三方中转站普遍没有**——这是中转站方案的已知坑
+- 解决(选择改回人工审批,不依赖中转站模型):
+  1. Codex 里 `/permissions` 关闭「Approve for me」,审批弹窗回到用户手上
+  2. `~/.codex/config.toml` 追加 `[sandbox_workspace_write] network_access = true`,pip 这类联网命令在沙盒内直接执行,不再触发审批
+  3. `.git` 目录在 workspace-write 沙盒下是有意保护的(防 agent 篡改版本历史),git 操作走人工审批是设计内的正确路径
+
+**学到了什么：**
+- 自动审批把"人在环上"换成"模型在环上":审批模型不可达时流程直接卡死,不会降级回人工——依赖链上多一个模型就多一个故障点
+- 保留自动审批的备选方案:本地模型目录覆盖(`model_catalog_json` + `auto_review_model_override`)把审批请求映射到中转站已有模型
+- 附带坑:多行命令块粘贴到 cmd 会被折行拆成多条命令(`git add ... assets` 的末尾参数变成独立命令悄悄丢失),执行后用 `git status` 核对暂存结果才发现
+
 ---
 
 ## 请求链路总览
@@ -97,6 +114,8 @@ prepend-rules:
 | npm 升级时 EPERM 清理警告 | 在 Codex 内自更新,运行中的 codex.exe 被 Windows 文件锁占用 | 无害;残留临时目录关闭 Codex 后手动删除 |
 | cmd 里 `rm` 不可用 | `rm`/`$VAR` 是 Git Bash 语法,cmd 用 `rmdir /s /q`/`%VAR%` | 区分 shell 再敲命令 |
 | new-log.sh 中英混合标题被截断 | 脚本处理混合编码标题时文件名截断且退出码 1 | 手动重命名;待修脚本 |
+| Codex 审批报 503,人工授权也无效 | 自动审批依赖 `codex-auto-review` 模型,SubRouter 中转站无此渠道 | `/permissions` 改回人工审批 + 沙盒开 `network_access` |
+| 多行命令粘贴 cmd 被拆行执行 | 代码块折行使 `git add ... assets` 末尾参数变成独立命令 | 粘贴后用 `git status` 核对暂存结果 |
 
 ---
 
@@ -104,7 +123,7 @@ prepend-rules:
 
 | 文件 | 说明 |
 |------|------|
-| `~/.codex/config.toml` | Codex base_url 指向 CC Switch 本地端口 15721 |
+| `~/.codex/config.toml` | Codex base_url 指向 CC Switch 本地端口 15721;新增 `[sandbox_workspace_write] network_access = true` |
 | `~/.cc-switch/logs/cc-switch.log` | 定位故障跳的关键日志 |
 | Clash Verge「全局扩展配置」(Merge) | 添加 prepend-rules 直连规则 |
 | `~/.codex/.env` | CLI 代理环境变量(no_proxy 已含 127.0.0.1) |
