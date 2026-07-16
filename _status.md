@@ -1,6 +1,6 @@
 # 当前状态
 
-> 最后更新：2026-07-16（每周回顾后）
+> 最后更新：2026-07-16（Clash 代理冲突排查收尾后）
 
 ## 进行中
 
@@ -17,6 +17,8 @@
 - [ ] 安装 Tier 2 插件（agent-sdk-dev、pydantic-ai、feature-dev）
 - [ ] 加 `NO_PROXY=127.0.0.1,localhost`（参考 Codex 最佳实践）
 - [ ] 考虑用 `SessionStart` hook 做 Clash 存活检测
+- [ ] 修复 `scripts/new-log.sh` 中英混合标题截断 bug（文件名被截断且退出码 1，README/commit 步骤未执行）
+- [ ] 其它国内直连服务（DeepSeek API 等）按需补充 Clash 直连规则
 - [ ] `/review-monthly` 在满一个月后首次执行
 - [ ] 手动删除 `docs/` 空目录（重启后）
 - [ ] 将 hello-agents 项目的学习内容写入 `notes/` 对应子目录
