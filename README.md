@@ -21,6 +21,7 @@
 <!-- INDEX_TABLE_START -->
 | 日期 | 主题 | 标签 |
 |------|------|------|
+| [2026-07-16](./docs/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md) | Claude Code 配置修复：Hook 结构 + API 代理隔离（NO_PROXY） | Claude Code · 代理 · 配置修复 · hooks · NO_PROXY |
 | [2026-07-16](./docs/Git基础认知-从零到够用.md) | Git 认知文档：从零到够用（分支/冲突/stash/reset/rebase/远程协作） | Git · 版本控制 · 基础概念 · 进阶 |
 | [2026-07-16](./docs/2026-07-16-目录结构重构计划-restructure-plan.md) | 目录结构重构计划：docs/ 拆分为多目录 | 项目优化 · 目录结构 · 重构 |
 | [2026-07-16](./docs/2026-07-16-代理端口修正-clash-port-fix.md) | 代理端口修正：Clash Verge Rev 端口 7890 → 7897 + Claude Code 接入代理 | 代理 · 工具链 · Clash Verge Rev · Claude Code · 故障排查 |
@@ -36,7 +37,7 @@
 - **AI Coding教程** — [知识蒸馏](./docs/2026-07-15-尚硅谷教程知识蒸馏-shangguigu-distillation.md)
 - **CLAUDE.md** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)、[协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)
 - **Clash Verge Rev** — [端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)
-- **Claude Code** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)
+- **Claude Code** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)、[配置修复](./docs/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)
 - **Codex** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)
 - **Continue.dev** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)
 - **Git** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)、[Git 认知文档](./docs/Git基础认知-从零到够用.md)
@@ -44,9 +45,9 @@
 - **OpenRouter** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)
 - **Vibe Coding** — [协作体系](./docs/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[知识蒸馏](./docs/2026-07-15-尚硅谷教程知识蒸馏-shangguigu-distillation.md)
 - **版本控制** — [Git 认知文档](./docs/Git基础认知-从零到够用.md)
-- **代理** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)、[端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)
+- **代理** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)、[端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)、[配置修复](./docs/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)
 - **工具链** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)、[端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)
-- **故障排查** — [端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)
+- **故障排查** — [端口修正](./docs/2026-07-16-代理端口修正-clash-port-fix.md)、[配置修复](./docs/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)
 - **环境搭建** — [环境搭建](./docs/2025-07-15-开发环境搭建-dev-env-setup.md)
 - **基础概念** — [Git 认知文档](./docs/Git基础认知-从零到够用.md)
 - **进阶** — [Git 认知文档](./docs/Git基础认知-从零到够用.md)
@@ -55,6 +56,9 @@
 - **项目优化** — [重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)、[重构计划](./docs/2026-07-16-目录结构重构计划-restructure-plan.md)
 - **知识蒸馏** — [知识蒸馏](./docs/2026-07-15-尚硅谷教程知识蒸馏-shangguigu-distillation.md)
 - **重构** — [重构日志](./docs/2026-07-15-重构日志组织方式-restructure-docs.md)、[重构计划](./docs/2026-07-16-目录结构重构计划-restructure-plan.md)
+- **hooks** — [配置修复](./docs/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)
+- **NO_PROXY** — [配置修复](./docs/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)
+- **配置修复** — [配置修复](./docs/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)
 <!-- TAGS_END -->
 
 ## 参考文档

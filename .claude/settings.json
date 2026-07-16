@@ -3,7 +3,12 @@
     "SessionEnd": [
       {
         "matcher": "",
-        "command": "cd \"E:/code/learning-log\" && git add -A && if ! git diff --cached --quiet; then git commit -m \"chore: auto-save $(date '+%Y-%m-%d %H:%M')\"; fi"
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"E:/code/learning-log\" && git add -A && if ! git diff --cached --quiet; then git commit -m \"chore: auto-save $(date '+%Y-%m-%d %H:%M')\"; fi"
+          }
+        ]
       }
     ]
   }
