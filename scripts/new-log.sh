@@ -363,13 +363,6 @@ git commit -m "$COMMIT_MSG"
 
 echo "✓ 已提交：$COMMIT_MSG"
 
-# 推送（如果远程存在）
-if git remote | grep -q .; then
-    git push origin master
-    echo "✓ 已推送到 GitHub"
-else
-    echo "  提示：未配置远程仓库，跳过推送"
-fi
-
 echo "---"
 echo "完成！日志：$FILENAME"
+echo "  提示：推送请手动执行 git push"

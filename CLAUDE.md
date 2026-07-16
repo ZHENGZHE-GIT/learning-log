@@ -122,6 +122,16 @@ bash scripts/new-log.sh -h
 | `--subdir` | notes 子目录（仅 `--type notes` 时有效，如 `02-agent-loop`） |
 | `-h, --help` | 帮助信息 |
 
+> 注意：脚本只做本地提交，不自动 push。推送需手动执行 `git push`。
+
+## 周期性回顾命令
+
+| 命令 | 用途 | 频率 |
+|------|------|------|
+| `/review-weekly` | 清空 inbox + 蒸馏本周 journal → notes | 每周 |
+| `/review-monthly` | 跨日志模式识别 + 月度学习总结 | 每月 |
+| `/task-done` | 任务完成收尾（日志 + README + _status.md + 提交）| 每次任务后 |
+
 ## Git 规范
 
 - Commit 格式：`docs: 任务标题`（日志），`chore:`（工具/配置变更），`refactor:`（目录重构）
@@ -146,25 +156,63 @@ bash scripts/new-log.sh -h
 - 表格用于对比和故障排查（踩坑记录用"问题/原因/解决"三列）
 - ASCII 框图用于工具链总览
 
-## 任务完成工作流（核心）
+## 学习工作流（CODE 框架）
+
+本项目遵循 CODE 框架的四步循环，由 AI 和用户协作完成：
+
+```
+Capture → Organize → Distill → Express
+ (inbox)  (分类归档)  (提炼笔记)  (产出+回顾)
+```
+
+### Capture（捕获）
+
+学习过程中产生的想法、链接、待深究概念 → 直接追加到 `_inbox.md` 的"待处理"列表。零摩擦，不需当场分类。
+
+### Organize（组织）
+
+Inbox 条目在每周回顾中分类归档：
+- 可执行的任务 → `journal/`
+- 概念性理解 → `notes/` 对应子目录
+- 外部链接/工具 → `references/`
+
+### Distill（蒸馏）
+
+两个层次的周期性回顾（由 AI 执行）：
+
+- **每周回顾（`/review-weekly`）**：清空 inbox，从本周 journal 提取关键收获 → `notes/`
+- **每月合成（`/review-monthly`）**：跨日志识别模式，生成月度总结 → `journal/`
+
+### Express（表达）
+
+每次任务完成后的产出流程，详见下方"任务完成收尾"。
+
+### 状态追踪
+
+`_status.md` 记录进行中的任务和下一步计划，由 task-done 和 review 命令自动维护。
+
+## 任务完成收尾（核心）
 
 每个任务结束时，AI **必须**按顺序执行以下步骤，确保每次任务都有迹可循：
 
 ### 步骤
 
-1. **生成任务日志** —— 按模板结构写入 `journal/YYYY-MM-DD-任务标题-english-slug.md`
-   - 参照 `templates/daily-log.md` 结构
-   - 包含：背景、完成事项（做了什么/学到了什么）、踩坑记录、关键文件、下一步计划
+1. **确认任务日志** —— 检查 `journal/` 下是否有本次任务的日志文件
+   - 如果没有，使用脚本创建：`bash scripts/new-log.sh -t "标签" -s "摘要" "标题" "slug"`
+   - 如果已有，确认 frontmatter 和章节结构完整
+   - 日志必须包含：背景、完成事项（做了什么/学到了什么）、踩坑记录、关键文件、下一步计划
 
 2. **更新 README.md** —— 在目录表格和标签索引中添加新条目
-   - 新日志添加到表格第一行（最新在前）
-   - 新标签添加到索引对应位置
+   - 如果步骤 1 调用了 `new-log.sh`，README 已自动更新
+   - 否则手动更新索引表（最新在前）和标签索引
 
-3. **提交到本地仓库** —— `git add -A && git commit -m "docs: 任务标题"`
+3. **更新 _status.md** —— 勾掉已完成条目，从"下一步计划"提取新条目
+
+4. **提交到本地仓库** —— `git add -A && git commit -m "docs: 任务标题"`
    - Commit message 使用任务标题作为摘要
    - 不 push（等用户明确要求）
 
-4. **展示任务摘要** —— 列出本次任务的文件变更和关键成果
+5. **展示任务摘要** —— 列出本次任务的文件变更和关键成果
 
 ### 回退机制
 

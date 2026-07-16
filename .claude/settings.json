@@ -1,12 +1,23 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"E:/code/learning-log\" && echo \"\" && echo \"=== Session Context ===\" && echo \"\" && in_count=$(grep -c '^\\- \\[ \\]' _inbox.md 2>/dev/null || echo 0) && echo \"📥 Inbox: ${in_count} 条待处理\" && last_journal=$(ls -t journal/2*.md 2>/dev/null | head -1) && if [ -n \"$last_journal\" ]; then echo \"📝 上次日志: $last_journal\"; fi && echo \"\""
+          }
+        ]
+      }
+    ],
     "SessionEnd": [
       {
         "matcher": "",
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"E:/code/learning-log\" && git add -A && if ! git diff --cached --quiet; then git commit -m \"chore: auto-save $(date '+%Y-%m-%d %H:%M')\"; fi"
+            "command": "cd \"E:/code/learning-log\" && git add -A && if ! git diff --cached --quiet; then git commit -m \"chore: [auto-save] $(date '+%Y-%m-%d %H:%M')\"; fi"
           }
         ]
       }
