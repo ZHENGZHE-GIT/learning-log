@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "WebFetch",
+      "Edit(src/**)",
+      "Edit(tests/**)",
+      "Edit(CLAUDE.md)",
+      "Edit(.claude/**)",
+      "Bash(<runtime> *)",
+      "Bash(<package-manager> *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(ls *)",
+      "Bash(cat *)"
+    ],
+    "defaultMode": "default"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"<project-path>\" && echo \"\" && echo \"📦 <project-name> | <runtime-version-check>\" && echo \"\" && git status --short 2>/dev/null | head -5 && echo \"\""
+          }
+        ]
+      }
+    ]
+  }
+}

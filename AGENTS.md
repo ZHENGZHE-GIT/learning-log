@@ -145,16 +145,16 @@ bash scripts/new-log.sh -h
 | `E:\code\hello-agents` | AI Agent 教学框架（ReAct、Plan-and-Solve、Reflection）|
 | `C:\Users\不会再相遇\.continue\config.json` | Continue.dev 配置 |
 | `C:\Users\不会再相遇\.codex\.env` | 含 `no_proxy=127.0.0.1,localhost` |
-| `references/常用指令速查.md` | Claude Code / Git / Shell 命令速查手册 |
+| `references/常用指令速查.md` | Codex / Git / Shell 命令速查手册 |
 | OpenRouter | API 中转，中国区只能用 Mistral/Llama/Kimi |
-| DeepSeek API | Claude Code 后端（兼容 Anthropic 格式）|
+| DeepSeek API | Codex 后端（兼容 Anthropic 格式）|
 
-## Claude Code 三层配置体系
+## Codex 三层配置体系
 
 本项目采用三层配置叠加，下层不能覆盖上层的 deny 规则：
 
 ```
-全局层 (~/.claude/settings.json) ── API key、代理、安全 deny 规则
+全局层 (~/.Codex/settings.json) ── API key、代理、安全 deny 规则
   │
   ├── learning-log ── permissions + hooks（文档编辑用 acceptEdits）
   │
@@ -163,22 +163,22 @@ bash scripts/new-log.sh -h
 
 | 层 | 文件 | 职责 |
 |----|------|------|
-| 全局 | `~/.claude/settings.json` | API key、模型映射、代理、全局 deny 规则 |
-| 全局 | `~/.claude/CLAUDE.md` | 沟通规则、红线操作、工具偏好 |
-| 项目 | `.claude/settings.json` | 项目级 permissions.allow + defaultMode + hooks |
-| 项目 | `CLAUDE.md` | 项目架构、运行方式、代码规范 |
+| 全局 | `~/.Codex/settings.json` | API key、模型映射、代理、全局 deny 规则 |
+| 全局 | `~/.Codex/AGENTS.md` | 沟通规则、红线操作、工具偏好 |
+| 项目 | `.Codex/settings.json` | 项目级 permissions.allow + defaultMode + hooks |
+| 项目 | `AGENTS.md` | 项目架构、运行方式、代码规范 |
 
 ### 配置叠加规则
 
 1. 全局 deny 始终生效（`.env*`、secrets、`rm -rf`、`git push/merge/rebase` 等），项目层不能覆盖
 2. 项目层 permissions.allow 只能在全局 deny 的约束下增加允许项
-3. 项目层 settings.json 建议加入 `.gitignore`（权限偏好是个人设置），CLAUDE.md 应纳入版本控制
+3. 项目层 settings.json 建议加入 `.gitignore`（权限偏好是个人设置），AGENTS.md 应纳入版本控制
 
 ### 新建项目参考
 
-模板文件：`.claude/project-template/`（`settings.json` + `CLAUDE.md`）
+模板文件：`.Codex/project-template/`（`settings.json` + `AGENTS.md`）
 
-1. 在项目根目录创建 `.claude/` 目录
+1. 在项目根目录创建 `.Codex/` 目录
 2. 复制模板文件并替换占位符（`<project-path>`、`<runtime>`、`<project-name>`）
 3. 根据项目语言添加对应的 Bash 权限（如 `Bash(python *)`、`Bash(npm *)`）
 

@@ -1,4 +1,35 @@
 {
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "WebFetch",
+      "Edit(journal/**)",
+      "Edit(notes/**)",
+      "Edit(troubleshooting/**)",
+      "Edit(references/**)",
+      "Edit(templates/**)",
+      "Edit(scripts/**)",
+      "Edit(assets/**)",
+      "Edit(_inbox.md)",
+      "Edit(_status.md)",
+      "Edit(README.md)",
+      "Edit(CLAUDE.md)",
+      "Edit(.claude/**)",
+      "Bash(git *)",
+      "Bash(bash scripts/*)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(find *)",
+      "Bash(cd *)",
+      "Bash(echo *)"
+    ],
+    "defaultMode": "acceptEdits"
+  },
   "hooks": {
     "SessionStart": [
       {
