@@ -21,6 +21,7 @@
 <!-- INDEX_TABLE_START -->
 | 日期 | 主题 | 标签 |
 |------|------|------|
+| [2026-07-20](./journal/2026-07-20-SessionStart仪表盘-session-start-dashboard.md) | SessionStart 仪表盘：学习进度总览（阶段/下一步/inbox/日志） | 工作流 · hooks · SessionStart · 仪表盘 · 进度追踪 |
 | [2026-07-20](./journal/2026-07-20-三大范式-three-paradigms-complete.md) | 三大范式学习完成：ReAct / Plan-and-Solve / Reflection | Agent范式 · ReAct · Plan-and-Solve · Reflection · hello-agents |
 | [2026-07-17](./troubleshooting/2026-07-17-OpenAI电话验证踩坑-openai-phone-verification.md) | OpenAI 电话验证踩坑：接码平台逐一排查（SMS-Activate/HeroSMS/5SIM/giffgaff/estk） | OpenAI · Codex · 电话验证 · 接码平台 · 海外手机号 |
 | [2026-07-16](./troubleshooting/2026-07-16-Clash代理与国内服务冲突排查-clash-proxy-domestic-services.md) | Clash 代理与国内服务冲突：npm ECONNRESET + Codex SSE 流断连,直连规则解决 | Clash · 代理 · Codex · npm · 故障排查 |
@@ -54,25 +55,28 @@
 - **Plan-and-Solve** — [三大范式](./journal/2026-07-20-三大范式-three-paradigms-complete.md)
 - **ReAct** — [三大范式](./journal/2026-07-20-三大范式-three-paradigms-complete.md)
 - **Reflection** — [三大范式](./journal/2026-07-20-三大范式-three-paradigms-complete.md)
+- **SessionStart** — [仪表盘](./journal/2026-07-20-SessionStart仪表盘-session-start-dashboard.md)
 - **Vibe Coding** — [协作体系](./journal/2026-07-15-协作体系搭建-vibe-coding-setup.md)、[知识蒸馏](./journal/2026-07-15-尚硅谷教程知识蒸馏-shangguigu-distillation.md)
 - **版本控制** — [Git 认知文档](./notes/Git基础认知-从零到够用.md)
 - **代理** — [环境搭建](./journal/2025-07-15-开发环境搭建-dev-env-setup.md)、[端口修正](./troubleshooting/2026-07-16-代理端口修正-clash-port-fix.md)、[配置修复](./journal/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)、[代理冲突排查](./troubleshooting/2026-07-16-Clash代理与国内服务冲突排查-clash-proxy-domestic-services.md)
 - **电话验证** — [电话验证踩坑](./troubleshooting/2026-07-17-OpenAI电话验证踩坑-openai-phone-verification.md)
-- **工作流** — [工作流改善](./journal/2026-07-16-工作流改善-workflow-improvement.md)
+- **工作流** — [工作流改善](./journal/2026-07-16-工作流改善-workflow-improvement.md)、[仪表盘](./journal/2026-07-20-SessionStart仪表盘-session-start-dashboard.md)
 - **工具链** — [环境搭建](./journal/2025-07-15-开发环境搭建-dev-env-setup.md)、[端口修正](./troubleshooting/2026-07-16-代理端口修正-clash-port-fix.md)
 - **故障排查** — [端口修正](./troubleshooting/2026-07-16-代理端口修正-clash-port-fix.md)、[配置修复](./journal/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)、[代理冲突排查](./troubleshooting/2026-07-16-Clash代理与国内服务冲突排查-clash-proxy-domestic-services.md)
 - **海外手机号** — [电话验证踩坑](./troubleshooting/2026-07-17-OpenAI电话验证踩坑-openai-phone-verification.md)
 - **环境搭建** — [环境搭建](./journal/2025-07-15-开发环境搭建-dev-env-setup.md)
 - **基础概念** — [Git 认知文档](./notes/Git基础认知-从零到够用.md)
+- **进度追踪** — [仪表盘](./journal/2026-07-20-SessionStart仪表盘-session-start-dashboard.md)
 - **进阶** — [Git 认知文档](./notes/Git基础认知-从零到够用.md)
 - **接码平台** — [电话验证踩坑](./troubleshooting/2026-07-17-OpenAI电话验证踩坑-openai-phone-verification.md)
 - **目录结构** — [重构计划](./journal/2026-07-16-目录结构重构计划-restructure-plan.md)
 - **日志规范** — [重构日志](./journal/2026-07-15-重构日志组织方式-restructure-docs.md)
 - **项目优化** — [重构日志](./journal/2026-07-15-重构日志组织方式-restructure-docs.md)、[重构计划](./journal/2026-07-16-目录结构重构计划-restructure-plan.md)、[工作流改善](./journal/2026-07-16-工作流改善-workflow-improvement.md)
+- **仪表盘** — [仪表盘](./journal/2026-07-20-SessionStart仪表盘-session-start-dashboard.md)
 - **知识蒸馏** — [知识蒸馏](./journal/2026-07-15-尚硅谷教程知识蒸馏-shangguigu-distillation.md)
 - **重构** — [重构日志](./journal/2026-07-15-重构日志组织方式-restructure-docs.md)、[重构计划](./journal/2026-07-16-目录结构重构计划-restructure-plan.md)
 - **hello-agents** — [三大范式](./journal/2026-07-20-三大范式-three-paradigms-complete.md)
-- **hooks** — [配置修复](./journal/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)、[工作流改善](./journal/2026-07-16-工作流改善-workflow-improvement.md)
+- **hooks** — [配置修复](./journal/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)、[工作流改善](./journal/2026-07-16-工作流改善-workflow-improvement.md)、[仪表盘](./journal/2026-07-20-SessionStart仪表盘-session-start-dashboard.md)
 - **周期性回顾** — [工作流改善](./journal/2026-07-16-工作流改善-workflow-improvement.md)
 - **NO_PROXY** — [配置修复](./journal/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)
 - **配置修复** — [配置修复](./journal/2026-07-16-Claude-Code配置修复-hook-and-proxy-fix.md)
