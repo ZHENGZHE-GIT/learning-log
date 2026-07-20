@@ -1,6 +1,6 @@
 # 当前状态
 
-> 最后更新：2026-07-17（OpenAI 电话验证踩坑笔记）
+> 最后更新：2026-07-20（三大范式学习完成，转入低代码平台阶段）
 
 ## 进行中
 
@@ -9,7 +9,7 @@
 ## 下一步
 
 - [ ] 找一个初级项目练手（番茄钟或记账工具），完整体验任务工作流
-- [ ] 学习 hello-agents 项目的 ReAct Agent 实现
+- [x] 学习 hello-agents 项目的 ReAct Agent 实现
 - [ ] 体验多模型切换（Sonnet ↔ DeepSeek）的实际效果
 - [ ] 尝试创建第一个自定义 Skill
 - [ ] 在新会话中验证 Memory 系统是否正常加载
@@ -21,7 +21,12 @@
 - [ ] 其它国内直连服务（DeepSeek API 等）按需补充 Clash 直连规则
 - [ ] `/review-monthly` 在满一个月后首次执行
 - [ ] 手动删除 `docs/` 空目录（重启后）
-- [ ] 将 hello-agents 项目的学习内容写入 `notes/` 对应子目录
+- [x] 将 hello-agents 项目的学习内容写入 `notes/` 对应子目录
+- [ ] **Dify 平台入门**：注册账号、了解 Workflow / Chatflow / Agent 应用类型
+- [ ] **Coze 平台入门**：注册账号、创建第一个 Bot、了解插件生态
+- [ ] **Dify vs Coze 对比分析**：各自优势、适用场景、底层架构差异
+- [ ] **用 Dify 搭建知识库问答机器人**：对比手写 ReAct Agent 的开发效率
+- [ ] **理解低代码平台的 Agent 实现与手写 Agent 的异同**
 
 ## 待回顾
 
